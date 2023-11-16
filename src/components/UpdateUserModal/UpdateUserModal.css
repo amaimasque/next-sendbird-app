@@ -1,0 +1,29 @@
+#modal_user {
+  @apply h-screen w-screen fixed z-10 top-0 items-center flex justify-center;
+  background-color: rgba(0,0,0,0.5);
+}
+
+#modal_content {
+  @apply bg-white rounded-lg p-5 flex flex-col justify-center items-center text-black z-50;
+}
+
+#image_container {
+  @apply relative;
+}
+
+#user_profile_picture {
+  @apply h-36 w-36 rounded-full object-cover hover:opacity-50;
+}
+
+#user_image_overlay {
+  @apply h-36 w-36 hover:opacity-100 absolute opacity-0 flex justify-center items-center top-0;
+  background-color: rgba(255,255,255,0.5);
+}
+
+#nickname_label {
+  @apply text-xs mt-2 self-start mb-1 ml-1;
+}
+
+#user_nickname {
+  @apply p-2 border-stone-500 border rounded-md;
+}
