@@ -34,16 +34,6 @@ const Chat = () => {
   createChannelContext?.onCreateChannel((channel) => {
     console.log('Created new channel', channel)
   })
-  useEffect(() => {
-    const elements = document.getElementsByClassName("sendbird-channel-header__title")
-    const user = elements[0]
-    if (user) {
-      user.addEventListener("click", openUpdateUser)
-    }
-    return () => {
-      user?.removeEventListener("click", openUpdateUser)
-    }
-  }, [])
 
   useEffect(() => {
     if (!userProfileModalVisible) {
@@ -59,7 +49,10 @@ const Chat = () => {
         <CreateChannelProvider onCreateChannel={(channel) => console.log(channel)}>
           {showChannel && <CreateChannelUI className="z-20" onCancel={() => setShowChannel(false)}/>}
           <div className='flex flex-row h-full z-0'>
-            <SBChannelList renderHeader={() => <ChatHeader onClickAddChannel={onClickAddChannel} />} onChannelSelect={(channel) => setSelectedChannelURL(channel?.url)} />
+            <SBChannelList
+              renderHeader={() => <ChatHeader onClickAddChannel={onClickAddChannel} onClickProfile={openUpdateUser}/>}
+              onChannelSelect={(channel) => setSelectedChannelURL(channel?.url)}
+            />
             <SBConversation className="channel_conversation" channelUrl={selectedChannelURL} onChatHeaderActionClick={() => setShowChannelSettings(true)}/>
             {showChannelSettings && <SBChannelSettings channelUrl={selectedChannelURL} onCloseClick={() => setShowChannelSettings(false)} />}
           </div>
