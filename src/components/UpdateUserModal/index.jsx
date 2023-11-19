@@ -4,8 +4,9 @@ import Image from 'next/image'
 import "./UpdateUserModal.css"
 import UploadIcon from "../Icons/UploadIcon"
 import { useEffect, useState } from "react"
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { updateUserProfileModal } from '@/actions/modalActions'
+import { updateUser } from "@/api/users"
 
 const UpdateUserModal = () => {
   const [nickName, setNickname] = useState("")
@@ -17,12 +18,12 @@ const UpdateUserModal = () => {
 
   const onFileChange = async (e) => {
     if (e.target?.files[0] && sdkInstance) {
-      console.log('You selected ' + e.target.files[0].name)
       try {
         const updatedUser = await sdkInstance.updateCurrentUserInfo({
           profileImage: e.target?.files[0]
         })
         if (updatedUser.plainProfileUrl !== profilePhoto) setProfilePhoto(updatedUser.plainProfileUrl)
+        await updateUser(user?.userId, {profilePhoto: updatedUser.plainProfileUrl})
       } catch (error) {
         console.log('Error uploading profile: ', error)
       }
@@ -44,7 +45,6 @@ const UpdateUserModal = () => {
 
   const onClickProfilePicture = (e) => {
     e.stopPropagation()
-    console.log('onClickProfilePicture')
     const upload = document.getElementById("file-upload")
     if (upload) upload.click()
   }
@@ -56,6 +56,7 @@ const UpdateUserModal = () => {
       await sdkInstance.updateCurrentUserInfo({
         nickname: nickName
       })
+      await updateUser(user?.userId, {nickname: nickName})
     } catch (error) {
       console.log('Error updating nickname: ', error)
     }
@@ -67,6 +68,7 @@ const UpdateUserModal = () => {
     if (currentBg !== bg) {
       return;
     }
+    nickName !== "" && onBlurNickname()
     return  dispatch(updateUserProfileModal(false))
   }
 

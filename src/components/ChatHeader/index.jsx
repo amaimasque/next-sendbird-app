@@ -9,7 +9,7 @@ const ChatHeader = ({onClickAddChannel, onClickProfile}) => {
   const sdkInstance = sendbirdSelectors.getSdk(globalStore)
   const currentUser = sdkInstance.currentUser
 
-  const onClickCreateHandler = () => onClickAddChannel && onClickAddChannel?.()
+  const onClickCreateHandler = () => currentUser && onClickAddChannel && onClickAddChannel?.()
   const onClickProfileHandler = () => onClickProfile && onClickProfile?.()
 
   return (

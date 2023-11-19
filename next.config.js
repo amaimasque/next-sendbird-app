@@ -10,6 +10,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'flaticon.com'
       },
+      {
+        protocol: 'https',
+        hostname: 'static.vecteezy.com'
+      },
     ],
   },
 }

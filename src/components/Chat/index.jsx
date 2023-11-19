@@ -12,6 +12,7 @@ import SBConversation from '@sendbird/uikit-react/Channel'
 import SBChannelList from '@sendbird/uikit-react/ChannelList'
 import SBChannelSettings from '@sendbird/uikit-react/ChannelSettings'
 import ChatHeader from '@/components/ChatHeader'
+import { createChannel } from '@/api/channels'
 
 const SEND_GRID_APP_ID = process.env.NEXT_PUBLIC_SEND_BIRD_APP_ID ?? ""
 const USER_ID = process.env.NEXT_PUBLIC_SEND_BIRD_USER_ID ?? ""
@@ -31,9 +32,26 @@ const Chat = () => {
     dispatch(updateUserProfileModal(true))
   }
 
-  createChannelContext?.onCreateChannel((channel) => {
+  const onCreateChannel = async (channel) => {
     console.log('Created new channel', channel)
-  })
+    try {
+      // * Save only if 1-1
+      if (channel?.memberCount === 2) {
+        const {creator, url, members} = channel
+        const otherMember = members.find(u => u.userId !== currentUser?.userId)
+        console.log('Should create new channel', creator, url, otherMember)
+        await createChannel({
+          creatorId: creator?.userId,
+          channelUrl: url,
+          chatMateId: otherMember?.userId
+        })
+      }
+    } catch (error) {
+      console.log('Error creating new channel: ', error)
+    }
+  }
+
+  createChannelContext?.onCreateChannel(onCreateChannel)
 
   useEffect(() => {
     if (!userProfileModalVisible) {
@@ -46,7 +64,7 @@ const Chat = () => {
 
   return (
       <div style={{height: "100vh", width: "100vw"}}>
-        <CreateChannelProvider onCreateChannel={(channel) => console.log(channel)}>
+        <CreateChannelProvider onCreateChannel={onCreateChannel}>
           {showChannel && <CreateChannelUI className="z-20" onCancel={() => setShowChannel(false)}/>}
           <div className='flex flex-row h-full z-0'>
             <SBChannelList
