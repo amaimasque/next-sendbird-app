@@ -10,10 +10,10 @@ This is a Next.js app with [Sendbird v3 UI KIT for React integration](https://se
 
 ## TODO
 
-- [ ]   API integration for created channel
-- [ ]   API integration for update user profile
-- [ ]   Create new user automatically on page visit
-- [ ]   API integration for saving of newly created user
+- [x]   API integration for created channel
+- [x]   API integration for update user profile
+- [x]   Create new user automatically on page visit
+- [x]   API integration for saving of newly created user
 
 ## Getting Started
 
